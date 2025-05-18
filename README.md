@@ -63,7 +63,6 @@ EcoFinds/
 ├── README.md
 ├── EcoFinds.png # Wireframe image
 
-
 ---
 
 ## 🔗 GitHub Repository
