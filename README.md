@@ -38,7 +38,7 @@ The app encourages reuse, reduces waste, and fosters community-driven circular c
 - Firebase (Authentication & Database)
 - Responsive for Mobile & Desktop
 
----
+----
 
 ## 🎥 Demo Video
 
