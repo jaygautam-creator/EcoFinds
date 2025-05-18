@@ -1,11 +1,11 @@
 // firebase.js
 const firebaseConfig = {
-  apiKey: "AIzaSyDGLANAXVM96w9RnV2PSppveKg1PhKtojE",
+  apiKey: "can't paste here",
   authDomain: "ecofinds-5fbfb.firebaseapp.com",
   projectId: "ecofinds-5fbfb",
   storageBucket: "ecofinds-5fbfb.appspot.com",
-  messagingSenderId: "122720610625",
-  appId: "1:122720610625:web:94390613b4838faa0e59c0"
+  messagingSenderId: "can't paste here",
+  appId: "can't paste here"
 };
 
 firebase.initializeApp(firebaseConfig);
