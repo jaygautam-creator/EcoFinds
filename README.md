@@ -42,7 +42,7 @@ The app encourages reuse, reduces waste, and fosters community-driven circular c
 
 ## 🎥 Demo Video
 
-📺 [Watch Here](https://your-demo-video-link)
+📺 [Watch Here](https://youtube.com/shorts/yiTNK940Q04)
 
 ---
 
