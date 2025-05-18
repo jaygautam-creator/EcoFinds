@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EcoFinds – Add Product</title>
+  <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+  <h2>Add New Product</h2>
+
+  <input type="text" id="title" placeholder="Product Title"><br>
+  <textarea id="desc" placeholder="Description"></textarea><br>
+  
+  <select id="category">
+    <option value="">Select Category</option>
+    <option value="Electronics">Electronics</option>
+    <option value="Books">Books</option>
+    <option value="Clothing">Clothing</option>
+    <option value="Furniture">Furniture</option>
+    <option value="Others">Others</option>
+  </select><br>
+  
+  <input type="number" id="price" placeholder="Price"><br>
+  <input type="file" id="image" accept="image/*"><br><br>
+
+  <button onclick="addProduct()">Submit Listing</button><br><br>
+  <a href="index.html">Back to Home</a>
+
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
+
+  <script>
+    function addProduct() {
+      const title = document.getElementById("title").value;
+      const desc = document.getElementById("desc").value;
+      const category = document.getElementById("category").value;
+      const price = document.getElementById("price").value;
+      const image = document.getElementById("image").files[0];
+
+      if (!title || !desc || !category || !price) {
+        alert("Please fill all fields");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function () {
+        const imageData = reader.result; // base64 image placeholder
+
+        db.collection("products").add({
+          title,
+          desc,
+          category,
+          price,
+          image: imageData,
+          user: auth.currentUser.email,
+          createdAt: new Date()
+        }).then(() => {
+          alert("Product added!");
+          location.href = "index.html";
+        }).catch(err => alert(err.message));
+      };
+
+      if (image) {
+        reader.readAsDataURL(image);
+      } else {
+        // If no image, still add
+        db.collection("products").add({
+          title,
+          desc,
+          category,
+          price,
+          image: null,
+          user: auth.currentUser.email,
+          createdAt: new Date()
+        }).then(() => {
+          alert("Product added without image!");
+          location.href = "index.html";
+        }).catch(err => alert(err.message));
+      }
+    }
+  </script>
+</body>
+</html>

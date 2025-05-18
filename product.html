@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EcoFinds – Product Details</title>
+  <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+  <h2>Product Details</h2>
+  <div id="product"></div>
+  <br>
+  <a href="index.html">⬅ Back to Listings</a>
+
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
+
+  <script>
+    // Extract product ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get("id");
+
+    if (productId) {
+      db.collection("products").doc(productId).get().then(doc => {
+        if (doc.exists) {
+          const p = doc.data();
+          const div = document.getElementById("product");
+          div.innerHTML = `
+            ${p.image ? `<img src="${p.image}" width="200"><br>` : ""}
+            <h3>${p.title}</h3>
+            <p><strong>Price:</strong> ₹${p.price}</p>
+            <p><strong>Category:</strong> ${p.category}</p>
+            <p><strong>Description:</strong><br>${p.desc}</p>
+          `;
+        } else {
+          document.getElementById("product").innerHTML = "Product not found.";
+        }
+      });
+    } else {
+      document.getElementById("product").innerHTML = "Invalid product ID.";
+    }
+  </script>
+</body>
+</html>

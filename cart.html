@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EcoFinds – Cart</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>My Cart</h2>
+  <div id="cart"></div>
+  <br>
+  <button onclick="checkout()">Checkout</button>
+  <br><br>
+  <a href="index.html">⬅ Back to Listings</a>
+
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
+
+  <script>
+    let currentUser;
+    let cartItems = [];
+
+    auth.onAuthStateChanged(user => {
+      if (!user) {
+        location.href = "login.html";
+        return;
+      }
+      currentUser = user;
+      loadCart();
+    });
+
+    function loadCart() {
+      db.collection("cart").where("user", "==", currentUser.email).get().then(snapshot => {
+        const div = document.getElementById("cart");
+        snapshot.forEach(doc => {
+          const p = doc.data();
+          cartItems.push(doc);
+          div.innerHTML += `
+            <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+              ${p.image ? `<img src="${p.image}" width="100"><br>` : ""}
+              <strong>${p.title}</strong><br>
+              ₹${p.price}
+            </div>
+          `;
+        });
+      });
+    }
+
+    function checkout() {
+      cartItems.forEach(doc => {
+        const item = doc.data();
+        db.collection("purchases").add({
+          ...item,
+          user: currentUser.email,
+          purchasedAt: new Date()
+        });
+        db.collection("cart").doc(doc.id).delete(); // remove from cart
+      });
+      alert("Purchase successful!");
+      location.reload();
+    }
+  </script>
+</body>
+</html>

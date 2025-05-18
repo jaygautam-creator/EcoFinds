@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EcoFinds – Previous Purchases</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>Previous Purchases</h2>
+  <div id="purchases"></div>
+  <br>
+  <a href="index.html">⬅ Back to Home</a>
+
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
+
+  <script>
+    auth.onAuthStateChanged(user => {
+      if (!user) {
+        location.href = "login.html";
+        return;
+      }
+
+      db.collection("purchases").where("user", "==", user.email).get().then(snapshot => {
+        const div = document.getElementById("purchases");
+        snapshot.forEach(doc => {
+          const p = doc.data();
+          div.innerHTML += `
+            <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+              ${p.image ? `<img src="${p.image}" width="100"><br>` : ""}
+              <strong>${p.title}</strong><br>
+              ₹${p.price}<br>
+              Category: ${p.category}
+            </div>
+          `;
+        });
+      });
+    });
+  </script>
+</body>
+</html>
